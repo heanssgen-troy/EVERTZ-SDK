@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.google.common.util.concurrent.RateLimiter"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="java.lang.Byte"/>
+<fullyQualifiedTypeName name="data.util.Packager"/>
+<fullyQualifiedTypeName name="metadata.MetadataTag"/>
+<fullyQualifiedTypeName name="metadata.MetadataTag.Metadata"/>
+</qualifiedTypeNameHistroy>

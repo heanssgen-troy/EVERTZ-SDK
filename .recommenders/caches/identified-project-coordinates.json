@@ -1,0 +1,1 @@
+[[{"location":"/home/troy/workspace/Inband","type":"PROJECT","hints":{"PROJECT_NAME":"Inband"}},"ABSENT"],[{"location":"/home/troy/lib/guava-18.0.jar","type":"JAR","hints":{}},"com.google.guava:guava:18.0.0"],[{"location":"/usr/lib/jvm/java-7-openjdk-amd64","type":"JRE","hints":{"EXECUTION_ENVIRONMENT":"JavaSE-1.7"}},"jre:jre:1.7.0"]]

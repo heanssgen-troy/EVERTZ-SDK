@@ -1,0 +1,75 @@
+package transfer.connection;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import transfer.datagram.Packager;
+import transfer.monitor.TransferInterface;
+
+public class SocketHandler {
+	private DatagramSocket socket;
+	private ConnectionMetadata sourceMetadata;
+	private ConnectionMetadata destinationMetadata;
+	public SocketHandler() {
+	}
+
+	public TransferInterface send(File payload, Integer rateLimit) throws FileNotFoundException, IOException{
+		if(socket.isConnected()){
+			TransferAction action = new TransferAction();
+			TransferInterface transferInterface = new TransferInterface();
+			transferInterface.attachListener(action);
+			action.initPayload(this.socket, Packager.Package(payload, 256), rateLimit);
+			action.start();
+			return transferInterface;
+		}
+		return null;
+	}
+	public void initializeSocket(boolean isIpv6, String hostAddress, Integer port) throws IOException {
+		this.determineMetadata(isIpv6, hostAddress, port);
+		this.socket = new DatagramSocket();
+		final boolean connected = connectSocket();
+		if (!connected) {
+			throw new RuntimeException("Cannot attach datagram socket to stream");
+		}
+	}
+
+	public String displayMetadata() {
+		return "" + sourceMetadata + "/n" + destinationMetadata;
+	}
+
+	private boolean connectSocket() {
+		this.socket.connect(destinationMetadata.getAddress(), destinationMetadata.getPort());
+		return socket.isConnected();
+	}
+
+	public void attachListener(TransferInterface listener, TransferAction action) {
+		listener.attachListener(action);
+	}
+
+
+	private void determineMetadata(boolean isIpv6, String hostAddress, int port) {
+		this.sourceMetadata = determineHostMetadata(isIpv6, "localhost", port);
+		this.destinationMetadata = determineHostMetadata(isIpv6, hostAddress, port);
+	}
+
+	private ConnectionMetadata determineHostMetadata(boolean isIpv6, String hostAddress, int port) {
+		InetAddress address;
+		try {
+			if (!isIpv6) {
+				address = (Inet4Address) Inet4Address.getByName(hostAddress);
+			} else {
+				address = (Inet6Address) Inet6Address.getByName(hostAddress);
+			}
+			ConnectionMetadata metadata = new ConnectionMetadata(address, address.getHostName(), port);
+			return metadata;
+		} catch (UnknownHostException e) {
+			throw new RuntimeException("Unable to reference localhost");
+		}
+	}
+}

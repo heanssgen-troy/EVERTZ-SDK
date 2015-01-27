@@ -1,0 +1,90 @@
+package transfer.connection;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
+
+protected class TransferAction extends Thread{
+	private boolean canPerformAction = false;
+	private DatagramPacket[] payload;
+	private DatagramSocket socket;
+	private Integer rateLimit;
+	private Integer remaining;
+	private final int INTERVAL = 1000;
+	private transfer.datagram.State state;
+	private ReentrantLock transferLock = new ReentrantLock();
+	public void initPayload(DatagramSocket socket, DatagramPacket[] payload, Integer rateLimit) {
+		if (validatePayload(payload)) {
+			this.payload = payload;
+			this.rateLimit = rateLimit;
+			this.canPerformAction = true;
+			this.socket = socket;
+		}
+		this.state = transfer.datagram.State.READY;
+	}
+	public int getRemainingPackets(){
+		return remaining;
+	}
+	public ReentrantLock getTransferLock(){
+		return transferLock;
+	}
+	public transfer.datagram.State getTransferState(){
+		return this.state;
+	}
+
+	
+	private boolean validatePayload(DatagramPacket[] payload) {
+		for (DatagramPacket packet : payload) {
+			if (packet == null) {
+				return false;
+			}
+		}
+		return true;
+	}
+	public void interuptTransfer(){
+		this.canPerformAction = false;
+		this.state = transfer.datagram.State.CLOSED;
+		this.transferLock.unlock();
+	}
+	public void resumeTransfer(){
+		this.canPerformAction = true;
+		this.state = transfer.datagram.State.OPEN;
+		this.transferLock.lock();
+	}
+	public void run() {
+		if (this.canPerformAction) {
+			this.state = transfer.datagram.State.TRANSFER;
+			List<DatagramPacket> payloadAsList = new ArrayList<DatagramPacket>(Arrays.asList(payload));
+			int transferAmount = 0;
+			this.remaining = payloadAsList.size();
+			long startTime = System.currentTimeMillis();
+			for (int packetCount = 0; packetCount < payloadAsList.size(); packetCount++) {
+				transferLock.lock();
+				DatagramPacket packet = payloadAsList.get(packetCount);
+				long now = System.currentTimeMillis();
+				if (startTime + this.INTERVAL > now) {
+					transferAmount = 0;
+					startTime = now;
+				}
+				if (transferAmount + packet.getData().length <= rateLimit) {
+					transferAmount += packet.getData().length;
+					try {
+						this.socket.send(packet);
+						this.remaining -= 1;
+						payloadAsList.remove(packet);
+					} catch (IOException e) {
+						e.printStackTrace();
+						this.state = transfer.datagram.State.ERROR;
+						transferLock.unlock();
+						return;
+					}
+				}
+				transferLock.unlock();
+			}
+		}
+	}
+}

@@ -1,0 +1,19 @@
+package data.formatter;
+
+import metadata.MetadataTag;
+import data.Packet;
+
+public class HeaderFormatter extends AFormatter{
+	
+	public HeaderFormatter(int headerSize, String version, MetadataTag tag){
+		super.setBytes(headerSize);
+		super.setVersion(version);
+		super.setHeaderPacket(tag);
+	}	
+	@Override
+	public Packet doFormatting() {
+
+		return null;
+	}
+	
+}

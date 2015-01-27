@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;process.IPreparation&apos; to &apos;IControlInterface&apos;&#x0A;- Original project: &apos;Inband&apos;&#x0A;- Original element: &apos;process.IPreparation&apos;&#x0A;- Renamed element: &apos;process.IControlInterface&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;IPreparation&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;process{IPreparation.java[IPreparation" matchStrategy="1" name="IControlInterface" qualified="false" references="true" similarDeclarations="false" stamp="1421173399665" textual="false" version="1.0"/>
+</session>

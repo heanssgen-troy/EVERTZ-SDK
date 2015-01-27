@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;returnable&apos; in &apos;data.formatter.HeaderFormatter.determineAssociationSource(...)&apos; to &apos;temp&apos;&#x0A;- Original project: &apos;Inband&apos;&#x0A;- Original element: &apos;data.formatter.HeaderFormatter.determineAssociationSource(String[]).returnable&apos;&#x0A;- Renamed element: &apos;returnable&apos;&#x0A;- Update references to refactored element" description="Rename local variable &apos;returnable&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;data.formatter{HeaderFormatter.java[HeaderFormatter~determineAssociationSource~\[QString;@returnable!1189!1235!1195!1204!\[I!0!false" name="temp" references="true" stamp="1422290083814" version="1.0"/>
+</session>

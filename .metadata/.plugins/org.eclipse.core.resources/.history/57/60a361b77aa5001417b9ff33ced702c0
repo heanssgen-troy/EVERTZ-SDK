@@ -1,0 +1,25 @@
+package data.formatter;
+
+import metadata.MetadataTag;
+import data.Packet;
+import data.util.Packager;
+
+public class HeaderFormatter extends AFormatter{
+	
+	public HeaderFormatter(int headerSize, String version, MetadataTag tag){
+		super.setBytes(headerSize);
+		super.setVersion(version);
+		super.setHeaderPacket(tag);
+	}	
+	@Override
+	public Packet doFormatting() {
+		byte[] header = new byte[64];
+		header[0] = Packager.convertIntToByte((Integer)super.getHeaderPacket().getValue(MetadataTag.Metadata.HEADER_VERSION));
+		header[1] = Packager.convertIntToByte((Integer)super.getHeaderPacket().getValue(MetadataTag.Metadata.HEADER_SIZE));
+		header[2] = Packager.convertIntToByte((Integer)super.getHeaderPacket().getValue(MetadataTag.Metadata.PROGRAM_REFERENCE));
+		header[3] = Packager.convertIntToByte((Integer)super.getHeaderPacket().getValue(MetadataTag.Metadata.ASSOCIATION_TYPE));
+		
+		return null;
+	}
+	
+}

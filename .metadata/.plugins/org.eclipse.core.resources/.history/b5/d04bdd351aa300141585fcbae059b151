@@ -1,0 +1,17 @@
+package data.formatter;
+
+import data.Packet;
+
+public class HeaderFormatter extends AFormatter{
+	
+	public HeaderFormatter(int headerSize, String version){
+		super.setBytes(headerSize);
+		super.setVersion(version);
+	}
+	@Override
+	public Packet doFormatting() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

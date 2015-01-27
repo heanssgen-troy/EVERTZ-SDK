@@ -1,0 +1,21 @@
+package data.formatter;
+
+import data.Packet;
+
+public abstract class IFormatter {
+	private int numBytes = 0;
+	private String version;
+	public void setBytes(int byteSize){
+		this.numBytes = byteSize;
+	}
+	public int getBytes(){
+		return this.numBytes;
+	}
+	public void setVersion(String version){
+		this.version = version;
+	}
+	public String getVersion(){
+		return this.version;
+	}
+	public abstract Packet doFormatting();
+}

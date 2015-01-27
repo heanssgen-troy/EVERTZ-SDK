@@ -1,0 +1,9 @@
+package data.formatter;
+
+import data.Packet;
+
+public interface IFormatter {
+	public void setBytes(int byteSize);
+	public void setVersion(String version);
+	public Packet doFormatting();
+}

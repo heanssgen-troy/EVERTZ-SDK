@@ -1,0 +1,5 @@
+package data.formatter;
+
+public interface IFormatter {
+
+}

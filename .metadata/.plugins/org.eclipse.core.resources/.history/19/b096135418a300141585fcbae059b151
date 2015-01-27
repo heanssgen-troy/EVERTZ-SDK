@@ -1,0 +1,12 @@
+package data.formatter;
+
+import data.Packet;
+
+public abstract class IFormatter {
+	private int numBytes = 0;
+	public void setBytes(int byteSize){
+		this.numBytes = byteSize;
+	}
+	public abstract void setVersion(String version);
+	public abstract Packet doFormatting();
+}

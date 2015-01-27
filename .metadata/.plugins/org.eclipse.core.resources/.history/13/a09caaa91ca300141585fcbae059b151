@@ -1,0 +1,94 @@
+package metadata;
+
+import java.text.DecimalFormat;
+import java.util.HashMap;
+
+public final class MetadataTag {
+
+	private HashMap<MetadataTag.Metadata, Object[]> metadataValues = new HashMap<MetadataTag.Metadata, Object[]>();
+	private MetadataPreferences preference;
+	public MetadataTag(MetadataPreferences p){
+		this.preference = p;
+		this.init();
+	}
+	private void init() {
+		for (MetadataTag.Metadata tag : Metadata.values()) {
+			metadataValues.put(tag, null);
+		}
+		putValue(MetadataTag.Metadata.USE_TIMECODE, new Object[]{preference.isUseTimecode()});
+		putValue(MetadataTag.Metadata.LOCAL, new Object[]{preference.isApplyLocal()});
+		putValue(MetadataTag.Metadata.PASSTHROUGH, new Object[]{preference.isPassThrough()});
+		putValue(MetadataTag.Metadata.MANDATORY, new Object[]{preference.isSetMandatory()});
+		
+	}
+	public MetadataTag(String name, Object[] value){
+		this.init();
+		this.preference = new MetadataPreferences();
+		this.putValue(MetadataTag.Metadata.NAME, new Object[]{name});
+		this.putValue(MetadataTag.Metadata.VALUE, value);
+	}
+	public void putValue(MetadataTag.Metadata tag, Object[] value) {
+		metadataValues.put(tag, value);
+	}
+
+	public void setTimecode(String hour, String minute, String second) {
+		StringBuffer timecodeString = new StringBuffer();
+
+		if (hour.length() > 2 || Integer.parseInt(hour) < 0
+				|| Integer.parseInt(hour) > 23) {
+			return;
+		}
+		if (minute.length() > 2 || Integer.parseInt(minute) < 0
+				|| Integer.parseInt(minute) > 59) {
+			return;
+		}
+		if (second.length() > 5 || Double.parseDouble(second) < 0
+				|| Double.parseDouble(second) > 59.99) {
+			return;
+		}
+
+		hour = new DecimalFormat("00").format(Double.parseDouble(hour));
+		minute = new DecimalFormat("00").format(Double.parseDouble(minute));
+		second = new DecimalFormat("00.00").format(Double.parseDouble(second));
+
+		timecodeString.append("" + hour + ":");
+		timecodeString.append("" + minute + ":");
+		timecodeString.append("" + second);
+
+		putValue(MetadataTag.Metadata.TIMECODE, new Object[] { timecodeString });
+	}
+	public void setValue(Object ... value){
+		putValue(MetadataTag.Metadata.VALUE, value);
+	}
+	public void setPassThrough(boolean value){
+		putValue(MetadataTag.Metadata.PASSTHROUGH, new Object[] {true});
+	}
+	public void setMandatory(boolean value){
+		putValue(MetadataTag.Metadata.MANDATORY, new Object[]{value});
+	}
+	public void setLocal(boolean value){
+		putValue(MetadataTag.Metadata.LOCAL, new Object[]{value});
+	}
+	public void useTimecode(boolean value){
+		putValue(MetadataTag.Metadata.USE_TIMECODE, new Object[]{value});
+	}
+	public void setName(String value){
+		putValue(MetadataTag.Metadata.NAME, new Object[]{value});
+	}
+	public static void main(String[] args) {
+		MetadataTag tag = new MetadataTag(null);
+		tag.setTimecode("2", "44", "59.99");
+		
+	}
+
+	public enum Metadata {
+		NAME,
+		TIMECODE,
+		VALUE,
+		PASSTHROUGH,
+		LOCAL,
+		MANDATORY,
+		USE_TIMECODE
+	}
+
+}

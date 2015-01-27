@@ -1,0 +1,4 @@
+package data.formatter;
+public class HeaderFormatter implements IFormatter{
+	
+}

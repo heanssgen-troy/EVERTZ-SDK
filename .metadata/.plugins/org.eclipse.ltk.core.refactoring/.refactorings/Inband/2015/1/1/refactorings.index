@@ -1,0 +1,12 @@
+1420162416151	Rename field 'metadata'
+1420162429962	Rename field 'sourceMetadata'
+1420164679061	Rename local variable 'result'
+1420165031265	Move compilation unit
+1420165034137	Move compilation unit
+1420165115070	Move compilation unit
+1420165118192	Move compilation unit
+1420218781955	Rename type 'TransferThread'
+1420220109348	Rename local variable 'counter'
+1420225761844	Rename type 'TransferListener'
+1420225811954	Rename method 'destroy'
+1420258337206	Rename local variable 'f'

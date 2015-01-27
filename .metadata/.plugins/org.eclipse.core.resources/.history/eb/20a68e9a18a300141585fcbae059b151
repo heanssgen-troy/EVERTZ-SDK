@@ -1,0 +1,24 @@
+package data.formatter;
+
+import data.Packet;
+
+public class HeaderFormatter extends AFormatter{
+
+	@Override
+	public void setBytes(int byteSize) {
+
+	}
+
+	@Override
+	public void setVersion(String version) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Packet doFormatting() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}
