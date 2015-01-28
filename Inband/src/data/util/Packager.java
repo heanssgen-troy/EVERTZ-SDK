@@ -42,8 +42,4 @@ public class Packager {
 		}
 		return packetList.toArray(new DatagramPacket[0]);
 	}
-	
-	public static byte convertIntToByte(int number){
-		return (byte)number;
-	}
 }

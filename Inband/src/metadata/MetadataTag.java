@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public final class MetadataTag {
 
-	private HashMap<MetadataTag.Metadata, Object> metadataValues = new HashMap<MetadataTag.Metadata, Object>();
+	private HashMap<MetadataTag.Metadata, MetadataEntry> metadataValues = new HashMap<MetadataTag.Metadata, MetadataEntry>();
 	public MetadataTag(){
 		this.init();
 	}
@@ -17,10 +17,10 @@ public final class MetadataTag {
 	public MetadataTag(String name, Object[] value){
 		this.init();
 	}
-	public void putValue(MetadataTag.Metadata tag, Object[] value) {
+	public void putValue(MetadataTag.Metadata tag, MetadataEntry value) {
 		metadataValues.put(tag, value);
 	}
-	public Object getValue(MetadataTag.Metadata tag){
+	public MetadataEntry getValue(MetadataTag.Metadata tag){
 		return metadataValues.get(tag);
 	}
 	public void setTimecode(String hour, String minute, String second) {
@@ -47,7 +47,7 @@ public final class MetadataTag {
 		timecodeString.append("" + minute + ":");
 		timecodeString.append("" + second);
 
-		putValue(MetadataTag.Metadata.TIMECODE, new Object[] { timecodeString });
+		putValue(MetadataTag.Metadata.TIMECODE, new MetadataEntry(timecodeString.toString(),5) );
 	}
 
 	public static void main(String[] args) {
