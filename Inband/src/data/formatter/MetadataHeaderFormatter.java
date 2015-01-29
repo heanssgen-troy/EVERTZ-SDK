@@ -19,7 +19,7 @@ public class MetadataHeaderFormatter extends AFormatter {
 	}
 
 	@Override
-	public Packet doFormatting() {
+	public Packet doFormatting(Object ... args) {
 		ByteBuffer header = ByteBuffer.allocate(super.getBytes());
 		header.put(super
 				.performDefaultFormatting(MetadataHeader.HEADER_VERSION));

@@ -16,43 +16,50 @@ public class FirmwareHeaderFormatter extends AFormatter {
 	}
 
 	@Override
-	public Packet doFormatting() {
+	public Packet doFormatting(Object... args) {
 		StringBuffer firmwareBuffer = new StringBuffer();
-
-		firmwareBuffer.append("@");
-		firmwareBuffer.append("X$EVTFWIMG{");
+		for (Object stringHeaders : args) {
+			firmwareBuffer.append(stringHeaders.toString());
+		}
+		firmwareBuffer.append("{");
 		boolean hasBegun = false;
 		for (FirmwareHeader tag : FirmwareHeader.values()) {
 			final String name = tag.getName();
-			final Object value = super.getHeaderPacket().getValue(tag).metadataValue;
-			if(hasBegun)
-			firmwareBuffer.append(",");
-			if (value instanceof Object[]) {
-				firmwareBuffer.append("\"" + name + " : [");
-				Object[] values = (Object[]) value;
-				for (Object arrayValue : values) {
-					firmwareBuffer.append(" \"" + arrayValue + "\"");
-					if (arrayValue != values[values.length - 1]) {
+			final HeaderEntry valTag = super.getHeaderPacket().getValue(tag);
+			if (valTag != null) {
+				final Object value = valTag.metadataValue;
+				if (value != null) {
+
+					if (hasBegun)
 						firmwareBuffer.append(",");
+					if (value instanceof Object[]) {
+						firmwareBuffer.append("\"" + name + " : [");
+						Object[] values = (Object[]) value;
+						for (Object arrayValue : values) {
+							firmwareBuffer.append(" \"" + arrayValue + "\"");
+							if (arrayValue != values[values.length - 1]) {
+								firmwareBuffer.append(",");
+							}
+						}
+						firmwareBuffer.append(" ]");
+					} else {
+						if (value instanceof String) {
+							firmwareBuffer.append("\"" + name + " : " + "\""
+									+ value + "\"");
+						} else {
+							firmwareBuffer.append("\"" + name + " : "
+									+ value.toString() + "");
+						}
 					}
-				}
-				firmwareBuffer.append(" ]");
-			} else {
-				if (value instanceof String) {
-					firmwareBuffer.append("\"" + name + " : " + "\"" + value
-							+ "\"");
-				} else {
-					firmwareBuffer.append("\"" + name + " : "
-							+ value.toString() + "");
+					hasBegun = true;
 				}
 			}
-			hasBegun = true;
 		}
 		firmwareBuffer.append("}");
 		ByteBuffer buffer = ByteBuffer.allocate(firmwareBuffer.toString()
 				.length() * 2);
 		for (char c : firmwareBuffer.toString().toCharArray()) {
-			buffer.putChar(c);
+			buffer.put((byte) c);
 		}
 		return new Packet(buffer.array());
 	}
@@ -74,7 +81,7 @@ public class FirmwareHeaderFormatter extends AFormatter {
 		t.putValue(FirmwareHeader.METADATA_VERSION, new HeaderEntry("v01", 0));
 
 		FirmwareHeaderFormatter formatter = new FirmwareHeaderFormatter(t);
-		Packet p = formatter.doFormatting();
+		Packet p = formatter.doFormatting("@", "X$EVTZFWIMG");
 
 		for (byte b : p.getData()) {
 			if ((char) b != ' ') {

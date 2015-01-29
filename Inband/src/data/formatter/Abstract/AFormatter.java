@@ -22,7 +22,7 @@ public abstract class AFormatter {
 	public String getVersion(){
 		return this.version;
 	}
-	public abstract Packet doFormatting();
+	public abstract Packet doFormatting(Object ... args);
 	public byte[] performDefaultFormatting(IPacketHeader data){
 		return performBasicFormatting(metadata.getValue((IPacketHeader) data));
 	}

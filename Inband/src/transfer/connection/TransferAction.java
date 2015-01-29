@@ -22,6 +22,8 @@ public class TransferAction extends Thread {
 	private ReentrantLock transferLock = new ReentrantLock();
 	private RateLimiter limiter;
 	private Packet globalHeaderPacket;
+	private Packet requestTransferPacket;
+	private Packet firmwarePacket;
 	/**
 	 * Protected constructor to prevent out-of-band subclassing of the Transfer
 	 * Action.
@@ -48,15 +50,33 @@ public class TransferAction extends Thread {
 	 *            - The rate in which the transfer may be performed, calculated
 	 *            in bytes per second.
 	 */
-	public void initPayload(Socket socket, DatagramPacket[] payload, Packet header, Integer rateLimit) {
+	public void initPayload(Socket socket, DatagramPacket[] payload, Packet header,Packet requestPacket,Packet firmwarePacket, Integer rateLimit) {
 		if (validatePayload(payload)) {
 			this.payload = payload;
 			this.globalHeaderPacket = header;
+			this.requestTransferPacket = requestPacket;
+			this.firmwarePacket = firmwarePacket;
 			this.limiter = RateLimiter.create(rateLimit);
 			this.canPerformAction = true;
 			this.socket = socket;
 		}
 		this.state = transfer.datagram.State.READY;
+	}
+
+	public Packet getGlobalHeaderPacket() {
+		return globalHeaderPacket;
+	}
+
+	public void setGlobalHeaderPacket(Packet globalHeaderPacket) {
+		this.globalHeaderPacket = globalHeaderPacket;
+	}
+
+	public Packet getEndTransferPacket() {
+		return firmwarePacket;
+	}
+
+	public void setEndTransferPacket(Packet endTransferPacket) {
+		this.firmwarePacket = endTransferPacket;
 	}
 
 	/**
@@ -190,5 +210,13 @@ public class TransferAction extends Thread {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public Packet getRequestTransferPacket() {
+		return requestTransferPacket;
+	}
+
+	public void setRequestTransferPacket(Packet requestTransferPacket) {
+		this.requestTransferPacket = requestTransferPacket;
 	}
 }

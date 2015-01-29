@@ -3,6 +3,7 @@ package transfer.connection;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
@@ -52,12 +53,12 @@ public class SocketHandler {
 	 * @throws FileNotFoundException - If the specified file is not available or the user has no read permissions.
 	 * @throws IOException - If the specified file cannot be read or the user has no read permissions.
 	 */
-	public TransferInterface send(File payload,Integer chunkSize, Integer rateLimit) throws FileNotFoundException, IOException{
+	public TransferInterface send(DatagramPacket[] payload,Packet headerPacket,Packet firmwarePacket,Packet upgradePacket, Integer rateLimit) throws FileNotFoundException, IOException{
 		if(socket.isConnected()){
 			TransferAction action = new TransferAction();
 			TransferInterface transferInterface = new TransferInterface();
 			transferInterface.attachListener(action);
-			action.initPayload(this.socket, Packager.Package(payload, chunkSize),this.globalHeaderPacket, rateLimit);
+			action.initPayload(this.socket, payload,headerPacket,upgradePacket,firmwarePacket, rateLimit);
 			action.start();
 			return transferInterface;
 		}else{
@@ -139,7 +140,6 @@ public class SocketHandler {
 		SocketHandler handler = new SocketHandler();
 		try {
 			handler.initializeSocket(false, "192.168.254.197", 44);
-			handler.send(new File("/home/troy/testImage.png"), 64, 256);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
