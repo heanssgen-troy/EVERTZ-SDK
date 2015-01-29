@@ -1,15 +1,15 @@
-package data.formatter;
+package data.formatter.Abstract;
 
 import java.nio.ByteBuffer;
 
-import metadata.MetadataEntry;
-import metadata.MetadataTag;
+import metadata.HeaderEntry;
+import metadata.HeaderContainer;
 import data.Packet;
 
 public abstract class AFormatter {
 	private int numBytes = 0;
 	private String version;
-	private MetadataTag metadata;
+	private HeaderContainer<IPacketHeader> metadata;
 	public void setBytes(int byteSize){
 		this.numBytes = byteSize;
 	}
@@ -23,11 +23,11 @@ public abstract class AFormatter {
 		return this.version;
 	}
 	public abstract Packet doFormatting();
-	public byte[] performDefaultFormatting(MetadataTag.Metadata data){
-		return performBasicFormatting(metadata.getValue(data));
+	public byte[] performDefaultFormatting(IPacketHeader data){
+		return performBasicFormatting(metadata.getValue((IPacketHeader) data));
 	}
 	
-	private byte[] performBasicFormatting(MetadataEntry entry){
+	private byte[] performBasicFormatting(HeaderEntry entry){
 		final Object value = entry.metadataValue;
 		byte[] targetBytes = new byte[entry.metadataSize];
 		ByteBuffer buffer = ByteBuffer.wrap(targetBytes);
@@ -57,10 +57,10 @@ public abstract class AFormatter {
 		}
 		return buffer.array();
 	}
-	public void setHeaderPacket(MetadataTag tag){
+	public void setHeaderPacket(HeaderContainer<IPacketHeader> tag){
 		this.metadata = tag;
 	}
-	public MetadataTag getHeaderPacket(){
+	public HeaderContainer<IPacketHeader> getHeaderPacket(){
 		return this.metadata;
 	}
 	

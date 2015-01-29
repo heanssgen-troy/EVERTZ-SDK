@@ -3,12 +3,15 @@ package transfer.connection;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.google.common.util.concurrent.RateLimiter;
+
+import data.Packet;
 
 public class TransferAction extends Thread {
 	private boolean canPerformAction = false;
@@ -18,7 +21,7 @@ public class TransferAction extends Thread {
 	private transfer.datagram.State state;
 	private ReentrantLock transferLock = new ReentrantLock();
 	private RateLimiter limiter;
-
+	private Packet globalHeaderPacket;
 	/**
 	 * Protected constructor to prevent out-of-band subclassing of the Transfer
 	 * Action.
@@ -45,9 +48,10 @@ public class TransferAction extends Thread {
 	 *            - The rate in which the transfer may be performed, calculated
 	 *            in bytes per second.
 	 */
-	public void initPayload(Socket socket, DatagramPacket[] payload, Integer rateLimit) {
+	public void initPayload(Socket socket, DatagramPacket[] payload, Packet header, Integer rateLimit) {
 		if (validatePayload(payload)) {
 			this.payload = payload;
+			this.globalHeaderPacket = header;
 			this.limiter = RateLimiter.create(rateLimit);
 			this.canPerformAction = true;
 			this.socket = socket;
@@ -166,7 +170,10 @@ public class TransferAction extends Thread {
 					if (this.isInterrupted()) {
 						transferLock.unlock();
 					} else {
-						this.socket.getOutputStream().write(packet.getData());;
+						ByteBuffer buffer = ByteBuffer.allocate(packet.getData().length + globalHeaderPacket.getData().length);
+						buffer.put(globalHeaderPacket.getData());
+						buffer.put(packet.getData());
+						this.socket.getOutputStream().write(buffer.array());;
 						this.remaining -= 1;
 						payloadAsList.remove(packet);
 					}

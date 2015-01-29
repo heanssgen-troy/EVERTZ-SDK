@@ -9,8 +9,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import data.util.Packager;
 import transfer.monitor.TransferInterface;
+import data.Packet;
+import data.util.Packager;
 
 /**
  * @author Troy Heanssgen
@@ -24,6 +25,7 @@ public class SocketHandler {
 	/** The connection metadata of the source computer.
 	 * 
 	 */
+	private Packet globalHeaderPacket;
 	private ConnectionMetadata sourceMetadata;
 	/** The connection metadata of the destination computer.
 	 * 
@@ -55,7 +57,7 @@ public class SocketHandler {
 			TransferAction action = new TransferAction();
 			TransferInterface transferInterface = new TransferInterface();
 			transferInterface.attachListener(action);
-			action.initPayload(this.socket, Packager.Package(payload, chunkSize), rateLimit);
+			action.initPayload(this.socket, Packager.Package(payload, chunkSize),this.globalHeaderPacket, rateLimit);
 			action.start();
 			return transferInterface;
 		}else{

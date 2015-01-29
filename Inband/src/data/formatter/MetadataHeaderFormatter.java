@@ -2,14 +2,17 @@ package data.formatter;
 
 import java.nio.ByteBuffer;
 
-import metadata.MetadataEntry;
-import metadata.MetadataTag;
+import metadata.HeaderEntry;
+import metadata.HeaderContainer;
 import data.Packet;
+import data.formatter.Abstract.AFormatter;
+import data.formatter.Abstract.IPacketHeader;
+import data.header.MetadataHeader;
 import data.util.Converter;
 
-public class HeaderFormatter extends AFormatter {
+public class MetadataHeaderFormatter extends AFormatter {
 
-	public HeaderFormatter(int headerSize, String version, MetadataTag tag) {
+	public MetadataHeaderFormatter(int headerSize, String version, HeaderContainer<IPacketHeader> tag) {
 		super.setBytes(headerSize);
 		super.setVersion(version);
 		super.setHeaderPacket(tag);
@@ -19,17 +22,17 @@ public class HeaderFormatter extends AFormatter {
 	public Packet doFormatting() {
 		ByteBuffer header = ByteBuffer.allocate(super.getBytes());
 		header.put(super
-				.performDefaultFormatting(MetadataTag.Metadata.HEADER_VERSION));
+				.performDefaultFormatting(MetadataHeader.HEADER_VERSION));
 		header.put(super
-				.performDefaultFormatting(MetadataTag.Metadata.HEADER_SIZE));
+				.performDefaultFormatting(MetadataHeader.HEADER_SIZE));
 		header.put(super
-				.performDefaultFormatting(MetadataTag.Metadata.PROGRAM_REFERENCE));
+				.performDefaultFormatting(MetadataHeader.PROGRAM_REFERENCE));
 		header.put(super
-				.performDefaultFormatting(MetadataTag.Metadata.ASSOCIATION_TYPE));
+				.performDefaultFormatting(MetadataHeader.ASSOCIATION_TYPE));
 
 		int[] ipBlockValues = determineAssociationSource(((String) super
 				.getHeaderPacket().getValue(
-						MetadataTag.Metadata.ASSOCIATION_SOURCE).metadataValue));
+						MetadataHeader.ASSOCIATION_SOURCE).metadataValue));
 
 		header.put(new byte[10]);
 		header.put(Converter.convertIntToByte(ipBlockValues[0]));
@@ -38,22 +41,22 @@ public class HeaderFormatter extends AFormatter {
 		header.put(Converter.convertIntToByte(ipBlockValues[3]));
 		header.put(Converter.convertIntToByte(ipBlockValues[4]));
 		header.put(super
-				.performDefaultFormatting(MetadataTag.Metadata.ASSOCIATION_PROGRAM));
+				.performDefaultFormatting(MetadataHeader.ASSOCIATION_PROGRAM));
 		header.put(super
-				.performDefaultFormatting(MetadataTag.Metadata.ASSOCIATION_PID));
+				.performDefaultFormatting(MetadataHeader.ASSOCIATION_PID));
 		header.put((byte) 0);
 		
 		int[] injectTimeValues = determineInjectTime(((String) super
 				.getHeaderPacket().getValue(
-						MetadataTag.Metadata.INJECT_TIME).metadataValue));
+						MetadataHeader.INJECT_TIME).metadataValue));
 		
 		header.put(Converter.convertIntToByte(injectTimeValues[0]));
 		header.put(Converter.convertIntToByte(injectTimeValues[1]));
 		header.put(Converter.convertIntToByte(injectTimeValues[2]));
 		header.put(Converter.convertIntToByte(injectTimeValues[3]));
-		header.put(super.performDefaultFormatting(MetadataTag.Metadata.PAYLOAD_LENGTH));
-		header.put(super.performDefaultFormatting(MetadataTag.Metadata.PTS_MODE));
-		header.put(super.performDefaultFormatting(MetadataTag.Metadata.PTS_OFFSET));
+		header.put(super.performDefaultFormatting(MetadataHeader.PAYLOAD_LENGTH));
+		header.put(super.performDefaultFormatting(MetadataHeader.PTS_MODE));
+		header.put(super.performDefaultFormatting(MetadataHeader.PTS_OFFSET));
 		header.put(new byte[26]);
 
 		return new Packet(header.array());
@@ -99,19 +102,19 @@ public class HeaderFormatter extends AFormatter {
 
 	public static void main(String[] args) {
 		
-		MetadataTag tag = new MetadataTag();
-		tag.putValue(MetadataTag.Metadata.HEADER_VERSION, new MetadataEntry(1,1));
-		tag.putValue(MetadataTag.Metadata.HEADER_SIZE, new MetadataEntry(64,1));
-		tag.putValue(MetadataTag.Metadata.PROGRAM_REFERENCE, new MetadataEntry(0,1));
-		tag.putValue(MetadataTag.Metadata.ASSOCIATION_TYPE, new MetadataEntry(2,1));
-		tag.putValue(MetadataTag.Metadata.ASSOCIATION_SOURCE, new MetadataEntry("233.0.0.1:1234",6));
-		tag.putValue(MetadataTag.Metadata.ASSOCIATION_PROGRAM, new MetadataEntry(17,2));
-		tag.putValue(MetadataTag.Metadata.ASSOCIATION_PID, new MetadataEntry(66,2));
-		tag.putValue(MetadataTag.Metadata.INJECT_TIME, new MetadataEntry("11:10:21-16",4));
-		tag.putValue(MetadataTag.Metadata.PAYLOAD_LENGTH, new MetadataEntry(1023,4));
-		tag.putValue(MetadataTag.Metadata.PTS_MODE, new MetadataEntry(5,1));
-		tag.putValue(MetadataTag.Metadata.PTS_OFFSET, new MetadataEntry(2,4));
-		HeaderFormatter formatter = new HeaderFormatter(64, "v1", tag);
+		HeaderContainer<IPacketHeader> tag = new HeaderContainer<IPacketHeader>();
+		tag.putValue(MetadataHeader.HEADER_VERSION, new HeaderEntry(1,1));
+		tag.putValue(MetadataHeader.HEADER_SIZE, new HeaderEntry(64,1));
+		tag.putValue(MetadataHeader.PROGRAM_REFERENCE, new HeaderEntry(0,1));
+		tag.putValue(MetadataHeader.ASSOCIATION_TYPE, new HeaderEntry(2,1));
+		tag.putValue(MetadataHeader.ASSOCIATION_SOURCE, new HeaderEntry("233.0.0.1:1234",6));
+		tag.putValue(MetadataHeader.ASSOCIATION_PROGRAM, new HeaderEntry(17,2));
+		tag.putValue(MetadataHeader.ASSOCIATION_PID, new HeaderEntry(66,2));
+		tag.putValue(MetadataHeader.INJECT_TIME, new HeaderEntry("11:10:21-16",4));
+		tag.putValue(MetadataHeader.PAYLOAD_LENGTH, new HeaderEntry(1023,4));
+		tag.putValue(MetadataHeader.PTS_MODE, new HeaderEntry(5,1));
+		tag.putValue(MetadataHeader.PTS_OFFSET, new HeaderEntry(2,4));
+		MetadataHeaderFormatter formatter = new MetadataHeaderFormatter(64, "v1", tag);
 		
 		Packet p = formatter.doFormatting();
 		
