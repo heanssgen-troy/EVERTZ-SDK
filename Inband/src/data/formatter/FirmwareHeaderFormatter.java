@@ -57,7 +57,7 @@ public class FirmwareHeaderFormatter extends AFormatter {
 		}
 		firmwareBuffer.append("}");
 		ByteBuffer buffer = ByteBuffer.allocate(firmwareBuffer.toString()
-				.length() * 2);
+				.length());
 		for (char c : firmwareBuffer.toString().toCharArray()) {
 			buffer.put((byte) c);
 		}
