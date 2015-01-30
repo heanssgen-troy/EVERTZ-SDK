@@ -180,6 +180,18 @@ public class TransferAction extends Thread {
 		if (this.canPerformAction) {
 			List<DatagramPacket> payloadAsList = new ArrayList<DatagramPacket>(Arrays.asList(payload));
 			this.remaining = payloadAsList.size();
+			transferLock.lock();
+			try {
+				socket.getOutputStream().write(new byte[0]);
+				socket.getOutputStream().write(globalHeaderPacket.getData());
+				ByteBuffer buffer = ByteBuffer.allocate(globalHeaderPacket.getData().length + firmwarePacket.getData().length);
+				buffer.put(globalHeaderPacket.getData());
+				buffer.put(firmwarePacket.getData());
+				socket.getOutputStream().write(buffer.array());
+			} catch (IOException e1) {
+				this.canPerformAction = false;
+				e1.printStackTrace();
+			}
 			while (payloadAsList.size() > 0 && this.canPerformAction) {
 				this.state = transfer.datagram.State.TRANSFER;
 
