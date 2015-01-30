@@ -111,6 +111,29 @@ public class DefaultUpgradeProcess  {
 		}
 	}
 	public static void main(String [] args) throws IOException{
+		/*
+		 * String - Device to send to
+		 * String - Association IP
+		 * Int - Association Port
+		 * Int - Association Type
+		 * Int - Association PID
+		 * Int - Association Program
+		 * String - Firmware Filepath
+		 * Int - Overwrite Number
+		 * Int - Delay (Hours)
+		 * Int - Delay (Minutes)
+		 * Int - Delay (Seconds)
+		 * String - Metadata String (Always empty)
+		 * String - Metadata Source (IP)
+		 * Int - Number of times to do this
+		 * String - Process Name
+		 * Int - Process ID
+		 * String - Device Name
+		 * String - Device MAC
+		 * Int - Device Serial
+		 * String - Device IP
+		 * String - Device Group
+		 */
 		DefaultUpgradeProcess.start("localhost","127.0.0.1",65535,1,17,1,"C:\\Users\\hh14wo\\Downloads\\3080MUX_DMXE_metadata.pdf",1,0,0,0,"","foobar",1,"hey",1,"temp","AB",12,"172.0.0.1","n");
 	}
 }
