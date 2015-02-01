@@ -3,9 +3,10 @@ package process;
 import java.io.File;
 import java.io.IOException;
 
-import transfer.connection.SocketHandler;
 import metadata.HeaderContainer;
 import metadata.HeaderEntry;
+import transfer.connection.SocketHandler;
+import transfer.monitor.TransferInterface;
 import data.Packet;
 import data.formatter.FirmwareHeaderFormatter;
 import data.formatter.MetadataHeaderFormatter;
@@ -17,7 +18,7 @@ import data.util.Packager;
 
 public class DefaultUpgradeProcess  {
 
-	public static void start(Object ... args) throws IOException{
+	public static TransferInterface start(Object ... args) throws IOException{
 		int counter = 0;
 		for(DefaultUpgradeEnumeration passThrough : DefaultUpgradeEnumeration.values()){
 			passThrough.setValue(args[counter]);
@@ -29,7 +30,7 @@ public class DefaultUpgradeProcess  {
 		
 		SocketHandler handler = new SocketHandler();
 		handler.initializeSocket(false, (String)DefaultUpgradeEnumeration.INJECT_IP.getValue(), 9669);
-		handler.send(Packager.Package(new File((String)DefaultUpgradeEnumeration.FIRMWARE_FILEPATH.getValue()), 1024), metadataHeader, firmwareHeader, upgradeRequest, 200000);
+		return handler.send(Packager.Package(new File((String)DefaultUpgradeEnumeration.FIRMWARE_FILEPATH.getValue()), 1024), metadataHeader, firmwareHeader, upgradeRequest, 200000);
 	}
 	
 	private static Packet determineMetadataHeader(){
