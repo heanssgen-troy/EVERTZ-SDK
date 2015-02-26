@@ -76,7 +76,7 @@ public class AbstractFrame extends JPanel implements Transferable{
 	@Override
 	public boolean isDataFlavorSupported(DataFlavor flavor) {
 		// TODO Auto-generated method stub
-		return flavor instanceof PanelDropFlavor;
+		return true;
 	}
 
 	@Override
