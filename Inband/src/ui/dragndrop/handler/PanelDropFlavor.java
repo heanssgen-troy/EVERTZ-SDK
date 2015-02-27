@@ -1,4 +1,4 @@
-package ui.dragndrop.flavor;
+package ui.dragndrop.handler;
 
 import java.awt.datatransfer.DataFlavor;
 

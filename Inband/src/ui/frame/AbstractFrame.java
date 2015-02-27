@@ -8,8 +8,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import ui.dragndrop.DropTargetPanel;
-import ui.dragndrop.flavor.PanelDropFlavor;
+import ui.dragndrop.handler.PanelDropFlavor;
 
 @SuppressWarnings("serial")
 public class AbstractFrame extends JPanel implements Transferable{
@@ -49,6 +48,8 @@ public class AbstractFrame extends JPanel implements Transferable{
 		applyLocal.setSelected(isDefault);
 		useTimecode.setSelected(isDefault);
 		
+		nameField.setText(name);
+		typeField.setText(type);
 		this.add(nameField);
 		this.add(typeField);
 		this.add(usePassThrough);
@@ -87,5 +88,12 @@ public class AbstractFrame extends JPanel implements Transferable{
 		else{
 			return null;
 		}
+	}
+	private enum Type{
+		STRING16,
+		STRING13,
+		STRING8,
+		INTEGER,
+		
 	}
 }
