@@ -89,11 +89,4 @@ public class AbstractFrame extends JPanel implements Transferable{
 			return null;
 		}
 	}
-	private enum Type{
-		STRING16,
-		STRING13,
-		STRING8,
-		INTEGER,
-		
-	}
 }

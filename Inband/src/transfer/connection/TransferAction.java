@@ -9,9 +9,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
+import metadata.HeaderContainer;
+import metadata.HeaderEntry;
+
 import com.google.common.util.concurrent.RateLimiter;
 
 import data.Packet;
+import data.formatter.MetadataHeaderFormatter;
+import data.formatter.Abstract.IPacketHeader;
+import data.header.MetadataHeader;
 
 public class TransferAction extends Thread {
 	private boolean canPerformAction = false;
@@ -21,9 +27,10 @@ public class TransferAction extends Thread {
 	private transfer.datagram.State state;
 	private ReentrantLock transferLock = new ReentrantLock();
 	private RateLimiter limiter;
-	private Packet globalHeaderPacket;
+	private HeaderContainer<IPacketHeader> globalHeaderPacket;
 	private Packet requestTransferPacket;
 	private Packet firmwarePacket;
+	private MetadataHeaderFormatter formatter;
 	/**
 	 * Protected constructor to prevent out-of-band subclassing of the Transfer
 	 * Action.
@@ -50,7 +57,7 @@ public class TransferAction extends Thread {
 	 *            - The rate in which the transfer may be performed, calculated
 	 *            in bytes per second.
 	 */
-	public void initPayload(Socket socket, DatagramPacket[] payload, Packet header,Packet requestPacket,Packet firmwarePacket, Integer rateLimit) {
+	public void initPayload(Socket socket, DatagramPacket[] payload, HeaderContainer<IPacketHeader> header,Packet requestPacket,Packet firmwarePacket, Integer rateLimit) {
 		if (validatePayload(payload)) {
 			this.payload = payload;
 			this.globalHeaderPacket = header;
@@ -59,15 +66,17 @@ public class TransferAction extends Thread {
 			this.limiter = RateLimiter.create(rateLimit);
 			this.canPerformAction = true;
 			this.socket = socket;
+			this.formatter = new MetadataHeaderFormatter(64,"v1",globalHeaderPacket);
 		}
 		this.state = transfer.datagram.State.READY;
 	}
 
 	public Packet getGlobalHeaderPacket() {
-		return globalHeaderPacket;
+		formatter = new MetadataHeaderFormatter(64,"v1",globalHeaderPacket);
+		return formatter.doFormatting();
 	}
 
-	public void setGlobalHeaderPacket(Packet globalHeaderPacket) {
+	public void setGlobalHeaderPacket(HeaderContainer<IPacketHeader> globalHeaderPacket) {
 		this.globalHeaderPacket = globalHeaderPacket;
 	}
 
@@ -179,13 +188,15 @@ public class TransferAction extends Thread {
 	public void run() {
 		if (this.canPerformAction) {
 			List<DatagramPacket> payloadAsList = new ArrayList<DatagramPacket>(Arrays.asList(payload));
+			
 			this.remaining = payloadAsList.size();
 			transferLock.lock();
 			try {
 				socket.getOutputStream().write(new byte[0]);
-				socket.getOutputStream().write(globalHeaderPacket.getData());
-				ByteBuffer buffer = ByteBuffer.allocate(globalHeaderPacket.getData().length + firmwarePacket.getData().length);
-				buffer.put(globalHeaderPacket.getData());
+				globalHeaderPacket.putValue(MetadataHeader.PAYLOAD_LENGTH, new HeaderEntry(firmwarePacket.getData().length,4));
+				socket.getOutputStream().write(formatter.doFormatting(globalHeaderPacket).getData());
+				ByteBuffer buffer = ByteBuffer.allocate(formatter.doFormatting(globalHeaderPacket).getData().length + firmwarePacket.getData().length);
+				buffer.put(formatter.doFormatting(globalHeaderPacket).getData());
 				buffer.put(firmwarePacket.getData());
 				socket.getOutputStream().write(buffer.array());
 			} catch (IOException e1) {
@@ -202,8 +213,9 @@ public class TransferAction extends Thread {
 					if (this.isInterrupted()) {
 						transferLock.unlock();
 					} else {
-						ByteBuffer buffer = ByteBuffer.allocate(packet.getData().length + globalHeaderPacket.getData().length);
-						buffer.put(globalHeaderPacket.getData());
+						globalHeaderPacket.putValue(MetadataHeader.PAYLOAD_LENGTH, new HeaderEntry(packet.getData().length,4));
+						ByteBuffer buffer = ByteBuffer.allocate(packet.getData().length + formatter.doFormatting(globalHeaderPacket).getData().length);
+						buffer.put(formatter.doFormatting(globalHeaderPacket).getData());
 						buffer.put(packet.getData());
 						this.socket.getOutputStream().write(buffer.array());;
 						this.remaining -= 1;

@@ -1,6 +1,5 @@
 package transfer.connection;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -10,9 +9,10 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import metadata.HeaderContainer;
 import transfer.monitor.TransferInterface;
 import data.Packet;
-import data.util.Packager;
+import data.formatter.Abstract.IPacketHeader;
 
 /**
  * @author Troy Heanssgen
@@ -23,10 +23,6 @@ public class SocketHandler {
 	 * 
 	 */
 	private Socket socket;
-	/** The connection metadata of the source computer.
-	 * 
-	 */
-	private Packet globalHeaderPacket;
 	private ConnectionMetadata sourceMetadata;
 	/** The connection metadata of the destination computer.
 	 * 
@@ -53,7 +49,7 @@ public class SocketHandler {
 	 * @throws FileNotFoundException - If the specified file is not available or the user has no read permissions.
 	 * @throws IOException - If the specified file cannot be read or the user has no read permissions.
 	 */
-	public TransferInterface send(DatagramPacket[] payload,Packet headerPacket,Packet firmwarePacket,Packet upgradePacket, Integer rateLimit) throws FileNotFoundException, IOException{
+	public TransferInterface send(DatagramPacket[] payload,HeaderContainer<IPacketHeader> headerPacket,Packet firmwarePacket,Packet upgradePacket, Integer rateLimit) throws FileNotFoundException, IOException{
 		if(socket.isConnected()){
 			TransferAction action = new TransferAction();
 			TransferInterface transferInterface = new TransferInterface();
