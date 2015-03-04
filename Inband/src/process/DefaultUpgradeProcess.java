@@ -3,13 +3,15 @@ package process;
 import java.io.File;
 import java.io.IOException;
 
+import transfer.connection.SocketHandler;
 import metadata.HeaderContainer;
 import metadata.HeaderEntry;
-import transfer.connection.SocketHandler;
 import data.Packet;
 import data.formatter.FirmwareHeaderFormatter;
+import data.formatter.MetadataHeaderFormatter;
 import data.formatter.Abstract.IPacketHeader;
 import data.header.FirmwareHeader;
+import data.header.MetadataHeader;
 import data.util.Packager;
 
 
@@ -23,10 +25,26 @@ public class DefaultUpgradeProcess  {
 		}
 		Packet firmwareHeader = DefaultUpgradeProcess.determineFirmwareHeader();
 		Packet upgradeRequest = DefaultUpgradeProcess.determineUpgradePacket();
-		
+		HeaderContainer<IPacketHeader> metadataHeader = DefaultUpgradeProcess.determineMetadataHeader();
 		SocketHandler handler = new SocketHandler();
 		handler.initializeSocket(false, (String)DefaultUpgradeEnumeration.INJECT_IP.getValue(), 9669);
-		handler.send(Packager.Package(new File((String)DefaultUpgradeEnumeration.FIRMWARE_FILEPATH.getValue()), 1024), null, firmwareHeader, upgradeRequest, 200000);
+		handler.send(Packager.Package(new File((String)DefaultUpgradeEnumeration.FIRMWARE_FILEPATH.getValue()), 1024),metadataHeader , firmwareHeader, upgradeRequest, 200000);
+	}
+	
+	private static HeaderContainer<IPacketHeader> determineMetadataHeader(){
+		HeaderContainer<IPacketHeader> container = new HeaderContainer<IPacketHeader>(); 
+		container.putValue(MetadataHeader.HEADER_VERSION, new HeaderEntry(1,1));
+		container.putValue(MetadataHeader.HEADER_SIZE, new HeaderEntry(64,1));
+		container.putValue(MetadataHeader.PROGRAM_REFERENCE, new HeaderEntry(1,1));
+		container.putValue(MetadataHeader.ASSOCIATION_TYPE, new HeaderEntry(DefaultUpgradeEnumeration.ASSOCIATION_TYPE.getValue(),1));
+		container.putValue(MetadataHeader.ASSOCIATION_SOURCE, new HeaderEntry(DefaultUpgradeEnumeration.ASSOCIATION_ADDRESS.getValue() + ":" + DefaultUpgradeEnumeration.ASSOCIATION_PORT.getValue(),6));
+		container.putValue(MetadataHeader.ASSOCIATION_PROGRAM, new HeaderEntry(DefaultUpgradeEnumeration.ASSOCIATION_PROGRAM.getValue(),2));
+		container.putValue(MetadataHeader.ASSOCIATION_PID, new HeaderEntry(DefaultUpgradeEnumeration.ASSOCIATION_PID.getValue(),2));
+		container.putValue(MetadataHeader.INJECT_TIME, new HeaderEntry(DefaultUpgradeEnumeration.DELAY_HOURS.getValue() + ":" + DefaultUpgradeEnumeration.DELAY_MINUTES.getValue() + ":" + DefaultUpgradeEnumeration.DELAY_SECONDS.getValue()+"-" +1 ,4));
+		container.putValue(MetadataHeader.PAYLOAD_LENGTH, new HeaderEntry(DefaultUpgradeEnumeration.ASSOCIATION_PID.getValue(),4));
+		container.putValue(MetadataHeader.PTS_MODE, new HeaderEntry(0,1));
+		container.putValue(MetadataHeader.PTS_OFFSET, new HeaderEntry(0,4));
+		return container;
 	}
 	private static Packet determineFirmwareHeader(){
 		File f = new File((String)DefaultUpgradeEnumeration.FIRMWARE_FILEPATH.getValue());
@@ -102,7 +120,7 @@ public class DefaultUpgradeProcess  {
 		 * Int - Delay (Hours)
 		 * Int - Delay (Minutes)
 		 * Int - Delay (Seconds)
-		 * String - Metadata String (Always empty) **Placeholder for JSON implementation.
+		 * String - Metadata String (Always empty)
 		 * String - Metadata Source (IP)
 		 * Int - Number of times to do this
 		 * String - Process Name
