@@ -102,7 +102,7 @@ public class DefaultUpgradeProcess  {
 		 * Int - Delay (Hours)
 		 * Int - Delay (Minutes)
 		 * Int - Delay (Seconds)
-		 * String - Metadata String (Always empty)
+		 * String - Metadata String (Always empty) **Placeholder for JSON implementation.
 		 * String - Metadata Source (IP)
 		 * Int - Number of times to do this
 		 * String - Process Name

@@ -193,12 +193,21 @@ public class TransferAction extends Thread {
 			transferLock.lock();
 			try {
 				socket.getOutputStream().write(new byte[0]);
-				globalHeaderPacket.putValue(MetadataHeader.PAYLOAD_LENGTH, new HeaderEntry(firmwarePacket.getData().length,4));
+				globalHeaderPacket.putValue(MetadataHeader.PAYLOAD_LENGTH, new HeaderEntry(requestTransferPacket.getData().length + 64,4));
 				socket.getOutputStream().write(formatter.doFormatting(globalHeaderPacket).getData());
+				
+				ByteBuffer upgradeBuffer = ByteBuffer.allocate(formatter.doFormatting(globalHeaderPacket).getData().length + requestTransferPacket.getData().length);
+				upgradeBuffer.put(formatter.doFormatting(globalHeaderPacket).getData());
+				upgradeBuffer.put(requestTransferPacket.getData());
+				socket.getOutputStream().write(upgradeBuffer.array());
+				
+				globalHeaderPacket.putValue(MetadataHeader.PAYLOAD_LENGTH, new HeaderEntry(firmwarePacket.getData().length + 64,4));
 				ByteBuffer buffer = ByteBuffer.allocate(formatter.doFormatting(globalHeaderPacket).getData().length + firmwarePacket.getData().length);
 				buffer.put(formatter.doFormatting(globalHeaderPacket).getData());
 				buffer.put(firmwarePacket.getData());
 				socket.getOutputStream().write(buffer.array());
+				
+
 			} catch (IOException e1) {
 				this.canPerformAction = false;
 				e1.printStackTrace();
