@@ -8,7 +8,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import ui.dragndrop.handler.PanelDropFlavor;
+import ui.dragndrop.flavor.PanelDropFlavor;
 
 @SuppressWarnings("serial")
 public class AbstractFrame extends JPanel implements Transferable{

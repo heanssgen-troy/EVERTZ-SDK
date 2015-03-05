@@ -10,6 +10,8 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
 
+import ui.dragndrop.flavor.PanelDropFlavor;
+
 public class PanelTransferHandler extends TransferHandler {
 	/**
 	 * 

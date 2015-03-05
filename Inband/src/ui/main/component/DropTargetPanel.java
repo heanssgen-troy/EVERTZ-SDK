@@ -14,7 +14,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import ui.dragndrop.handler.PanelDropFlavor;
+import ui.dragndrop.flavor.PanelDropFlavor;
 import ui.dragndrop.handler.PanelTransferHandler;
 import ui.frame.AbstractFrame;
 import ui.frame.DashedGraphicsFrame;
