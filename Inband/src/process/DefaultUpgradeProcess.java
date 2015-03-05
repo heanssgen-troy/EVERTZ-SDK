@@ -3,12 +3,11 @@ package process;
 import java.io.File;
 import java.io.IOException;
 
-import transfer.connection.SocketHandler;
 import metadata.HeaderContainer;
 import metadata.HeaderEntry;
+import transfer.connection.SocketHandler;
 import data.Packet;
 import data.formatter.FirmwareHeaderFormatter;
-import data.formatter.MetadataHeaderFormatter;
 import data.formatter.Abstract.IPacketHeader;
 import data.header.FirmwareHeader;
 import data.header.MetadataHeader;

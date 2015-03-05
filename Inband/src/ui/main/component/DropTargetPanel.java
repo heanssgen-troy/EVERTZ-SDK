@@ -1,4 +1,4 @@
-package ui.dragndrop;
+package ui.main.component;
 import java.awt.GridLayout;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
@@ -31,13 +31,16 @@ public class DropTargetPanel extends JPanel {
 		relayout();
 		new DropTargetListener(this);
 		this.setLayout(null);
-		
 		this.setVisible(true);
 	}
 	
-	private void relayout(){
+	public void relayout(){
 		for(int i = 0; i < componentTarget.size(); i ++){
-			componentTarget.get(i).setBounds(5, i * 40 + 5,this.getWidth() - 5,45);
+				if(!(componentTarget.get(i) instanceof DashedGraphicsFrame)){
+					componentTarget.get(i).setBounds(5, i * 40 + 5,this.getWidth() - 5,45);
+				}else{
+					componentTarget.get(i).setBounds(18, i * 40 + 5,this.getWidth() - 30,45);
+				}
 		}
 	}
 	private class DropTargetListener extends DropTargetAdapter{
