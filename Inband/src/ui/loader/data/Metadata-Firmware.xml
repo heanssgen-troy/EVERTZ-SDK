@@ -6,7 +6,7 @@
         <type>STRING</type>
     </Type>
     <Type>
-        <defaultState>1</defaultState>
+        <defaultState>0</defaultState>
         <name>Device MAC</name>
         <type>STRING\16</type>
     </Type>

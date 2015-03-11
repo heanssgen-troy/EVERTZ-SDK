@@ -8,7 +8,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import ui.frame.AbstractFrame;
+import ui.dragndrop.handler.PanelTransferHandler;
+import ui.frame.ComponentFrame;
 import ui.loader.DragLoader;
 import ui.loader.data.DragType;
 import ui.loader.data.DragTypeContainer;
@@ -19,6 +20,7 @@ public class SourceList extends JList<JPanel> {
 	public SourceList(){
 		super();
 		this.init();
+		this.setTransferHandler(new PanelTransferHandler());
 	}
 	private void init(){
 		try{
@@ -30,7 +32,7 @@ public class SourceList extends JList<JPanel> {
 		}
 		DefaultListModel<JPanel> model = new DefaultListModel<JPanel>();
 		for(DragType type : sourceContainer.getList()){
-			model.addElement(new AbstractFrame(type.getName(), type.getType(),type.getDefaultState()==1,new JTextField()));
+			model.addElement(new ComponentFrame(type.getName(), type.getType(),type.getDefaultState()==1,new JTextField()));
 		}
 		this.setDragEnabled(true);
 		this.setModel(model);

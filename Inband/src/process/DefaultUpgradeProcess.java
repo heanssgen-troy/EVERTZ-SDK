@@ -53,11 +53,10 @@ public class DefaultUpgradeProcess  {
 		container.putValue(FirmwareHeader.DEVICE_SERIAL, new HeaderEntry(DefaultUpgradeEnumeration.DEVICE_SERIAL.getValue(),1));
 		container.putValue(FirmwareHeader.DEVICE_NAME, new HeaderEntry(DefaultUpgradeEnumeration.DEVICE_NAME.getValue(),1));
 		container.putValue(FirmwareHeader.FIRMWARE_NAME, new HeaderEntry(f.getName(),1));
-		container.putValue(FirmwareHeader.FIRMWARE_OVERWRITE_NUMBER, new HeaderEntry(DefaultUpgradeEnumeration.OVERWRITE_NUMBER,1));
+		container.putValue(FirmwareHeader.FIRMWARE_OVERWRITE_NUMBER, new HeaderEntry(DefaultUpgradeEnumeration.OVERWRITE_NUMBER.getValue(),1));
 		container.putValue(FirmwareHeader.FIRMWARE_SIZE, new HeaderEntry(f.length(),1));
-		container.putValue(FirmwareHeader.METADATA_SOURCE, new HeaderEntry(DefaultUpgradeEnumeration.METADATA_SOURCE,1));
+		container.putValue(FirmwareHeader.METADATA_SOURCE, new HeaderEntry(DefaultUpgradeEnumeration.METADATA_SOURCE.getValue(),1));
 		container.putValue(FirmwareHeader.METADATA_VERSION, new HeaderEntry("v01",1));
-		container.putValue(FirmwareHeader.DEVICE_GROUP, new HeaderEntry(DefaultUpgradeEnumeration.DEVICE_GROUP,1));
 		FirmwareHeaderFormatter formatter = new FirmwareHeaderFormatter(container);
 		return formatter.doFormatting("@","X$EVTZFWIMG");
 	}
@@ -130,6 +129,28 @@ public class DefaultUpgradeProcess  {
 		 * String - Device IP
 		 * String - Device Group
 		 */
-		DefaultUpgradeProcess.start("localhost","127.0.0.1",65535,1,17,1,"C:\\Users\\hh14wo\\Downloads\\3080MUX_DMXE_metadata.pdf",1,0,0,0,"","foobar",1,"hey",1,"temp","AB",12,"172.0.0.1","n");
+		String injectionDeviceIp = "192.168.10.36";
+		String associationIp = "239.10.10.10";
+		int associationPort = 1234;
+		int associationType = 2;
+		int associationPID = 500;
+		int associationProgram = 1;
+		String firmwareFilePath = "C:\\akhil\\tmp\\7881IRDA-V102B20150302-0076.img";
+		int overwriteImageType = 1;
+		int delayHours = 0;
+		int delayMinutes = 0;
+		int delaySeconds = 0;
+		String metadataString = "";//v01
+		String metadataSource = "7781DM-LB";
+		int iterations = 1;
+		String processName = "1";
+		int processId = 1;
+		String deviceName = "7881IRD-A";
+		String deviceMAC = "";
+		String deviceSerial = "*";
+		String deviceIp = "";
+		String deviceGroup = "*";
+		DefaultUpgradeProcess.start(injectionDeviceIp, associationIp, associationPort, associationType, associationPID, associationProgram, firmwareFilePath, overwriteImageType, delayHours, delayMinutes, delaySeconds, metadataString, metadataSource, iterations, processName, processId, deviceName, deviceMAC, deviceSerial, deviceIp, deviceGroup);
+
 	}
 }
