@@ -26,7 +26,6 @@ public class Executable {
 		frame.add(dropPane);
 		frame.revalidate();
 		
-		
 		return frame;
 		
 	}
