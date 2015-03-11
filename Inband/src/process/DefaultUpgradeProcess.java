@@ -70,7 +70,6 @@ public class DefaultUpgradeProcess  {
 		container.putValue(FirmwareHeader.FIRMWARE_NAME, new HeaderEntry(f.getName(),1));
 		container.putValue(FirmwareHeader.METADATA_SOURCE, new HeaderEntry(DefaultUpgradeEnumeration.METADATA_SOURCE.getValue(),1));
 		container.putValue(FirmwareHeader.METADATA_VERSION, new HeaderEntry("v01",1));
-		container.putValue(FirmwareHeader.DEVICE_GROUP, new HeaderEntry(DefaultUpgradeEnumeration.DEVICE_GROUP.getValue(),1));
 		FirmwareHeaderFormatter formatter = new FirmwareHeaderFormatter(container);
 		return formatter.doFormatting("@","XEVTZFWIMG");
 	}
