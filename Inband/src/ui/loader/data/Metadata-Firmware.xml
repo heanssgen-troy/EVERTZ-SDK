@@ -78,7 +78,6 @@
 	<Type>
         <defaultState>1</defaultState>
         <name>PTS OFFSET</name>
-        <name>PTS OFFSET</name>
         <type>INTx64</type>
     </Type>
 	

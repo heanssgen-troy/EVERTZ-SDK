@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="Z:/git/EVERTZ-SDK/resource/jaxb-impl.jar"/>
 	<classpathentry kind="lib" path="Z:/git/EVERTZ-SDK/resource/jaxb-jxc.jar"/>
 	<classpathentry kind="lib" path="Z:/git/EVERTZ-SDK/resource/jaxb-xjc.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/resource"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
