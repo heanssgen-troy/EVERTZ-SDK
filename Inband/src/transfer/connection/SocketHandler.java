@@ -2,17 +2,15 @@ package transfer.connection;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.DatagramPacket;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import metadata.HeaderContainer;
 import transfer.monitor.TransferInterface;
-import data.Packet;
-import data.formatter.Abstract.IPacketHeader;
+import data.JSONFormat.SendablePacket;
+import data.JSONFormat.transfer.TransferHandler;
 
 /**
  * @author Troy Heanssgen
@@ -49,13 +47,14 @@ public class SocketHandler {
 	 * @throws FileNotFoundException - If the specified file is not available or the user has no read permissions.
 	 * @throws IOException - If the specified file cannot be read or the user has no read permissions.
 	 */
-	public TransferInterface send(DatagramPacket[] payload,HeaderContainer<IPacketHeader> headerPacket,Packet firmwarePacket,Packet upgradePacket, Integer rateLimit) throws FileNotFoundException, IOException{
+	public TransferInterface send(SendablePacket packet) throws FileNotFoundException, IOException{
 		if(socket.isConnected()){
-			TransferAction action = new TransferAction();
+			TransferHandler handler = new TransferHandler(packet);
 			TransferInterface transferInterface = new TransferInterface();
-			transferInterface.attachListener(action);
-			action.initPayload(this.socket, payload,headerPacket,upgradePacket,firmwarePacket, rateLimit);
-			action.start();
+			transferInterface.attachListener(handler);
+			handler.setSocket(socket);
+			handler.start();
+			
 			return transferInterface;
 		}else{
 			throw new RuntimeException("Socket not initialized");

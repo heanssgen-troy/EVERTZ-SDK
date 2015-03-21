@@ -2,15 +2,15 @@ package transfer.monitor;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-import transfer.connection.TransferAction;
 import transfer.datagram.State;
+import data.JSONFormat.transfer.TransferHandler;
 
 /**
  * @author Troy Heanssgen
  *
  */
 public class TransferInterface implements IByteNotificationListener {
-	private TransferAction action;
+	private TransferHandler action;
 	private ReentrantLock lock;
 
 	/**
@@ -19,7 +19,7 @@ public class TransferInterface implements IByteNotificationListener {
 	 * @return True if the listener does not already have a listener. Function
 	 *         has no effect if a listener is already instated.
 	 */
-	public boolean attachListener(TransferAction action) {
+	public boolean attachListener(TransferHandler action) {
 		if (this.action == null) {
 			this.action = action;
 			return true;
@@ -37,7 +37,7 @@ public class TransferInterface implements IByteNotificationListener {
 	 */
 	@Override
 	public boolean hasRemainingBytes() {
-		return action.getRemainingPackets() > 0;
+		return action.getRemaining() > 0;
 	}
 
 	/**

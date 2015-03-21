@@ -8,7 +8,6 @@ import java.util.LinkedList;
 public class SendablePacket {
 	
 	private LinkedList<byte[]> sendableData = new LinkedList<byte[]>();
-	
 	public void addSendableHeader(Object o){
 		Method m = null;
 		try {
@@ -26,7 +25,10 @@ public class SendablePacket {
 			}
 		}
 	}
-	
+	public void addData(byte ... b){
+		sendableData.add(b);
+	}
+
 	public byte[] toData(){
 		int dataSize = 0;
 		for(byte[] b : sendableData){

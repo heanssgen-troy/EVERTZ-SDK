@@ -27,7 +27,7 @@ public class DefaultUpgradeProcess  {
 		HeaderContainer<IPacketHeader> metadataHeader = DefaultUpgradeProcess.determineMetadataHeader();
 		SocketHandler handler = new SocketHandler();
 		handler.initializeSocket(false, (String)DefaultUpgradeEnumeration.INJECT_IP.getValue(), 9669);
-		handler.send(Packager.Package(new File((String)DefaultUpgradeEnumeration.FIRMWARE_FILEPATH.getValue()), 1024),metadataHeader , firmwareHeader, upgradeRequest, 200000);
+		//handler.send(Packager.Package(new File((String)DefaultUpgradeEnumeration.FIRMWARE_FILEPATH.getValue()), 1024),metadataHeader , firmwareHeader, upgradeRequest, 200000);
 	}
 	
 	private static HeaderContainer<IPacketHeader> determineMetadataHeader(){
