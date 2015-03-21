@@ -16,10 +16,10 @@ public class Upgrade {
 	public static SendablePacket prepareUpgrade(JSONMetadata metadataPacket,JSONMetadata firmwarePacket,JSONMetadata upgradePacket, File firmwareFile){
 		SendablePacket packet = new SendablePacket();
 		packet.addData((byte)0);
-		metadataPacket.putValue("Metadata_Header_Payload_Length", upgradePacket.JSONtoData().length-64);
+		metadataPacket.putValue("Metadata_Header_Payload_Length", upgradePacket.JSONtoData().length);
 		packet.addSendableHeader(metadataPacket);
 		packet.addSendableHeader(upgradePacket);
-		metadataPacket.putValue("Metadata_Header_Payload_Length", firmwarePacket.JSONtoData().length-64);
+		metadataPacket.putValue("Metadata_Header_Payload_Length", firmwarePacket.JSONtoData().length);
 		packet.addSendableHeader(metadataPacket);
 		packet.addSendableHeader(firmwarePacket);
 		DatagramPacket[] packets = Upgrade.splitFirmwareFile(firmwareFile);
