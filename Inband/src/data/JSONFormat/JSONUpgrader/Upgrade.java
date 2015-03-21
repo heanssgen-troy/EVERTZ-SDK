@@ -90,7 +90,7 @@ public class Upgrade {
 	}
 	public static boolean doUpgrade(String processName, String injectIP, int programReference, int associationType, String associationSource,int associationProgram, int associationPID, String injectTime, int payloadLength,
 			int ptsMode, int ptsOffset, String devGroup, String devMac, String devSerial, String devName, String fwPath, int overwriteNumber, int firmwareSize, String metadataSource){
-			return doUpgrade(processName, injectIP, programReference,associationType, associationSource,associationProgram,associationPID, injectTime,payloadLength,ptsMode,ptsOffset,devGroup,devMac,devSerial,devName,fwPath,overwriteNumber,firmwareSize,metadataSource);
+			return Upgrade.doUpgrade(new Object[]{processName, injectIP, programReference,associationType, associationSource,associationProgram,associationPID, injectTime,payloadLength,ptsMode,ptsOffset,devGroup,devMac,devSerial,devName,fwPath,overwriteNumber,firmwareSize,metadataSource});
 			
 	}
 	
