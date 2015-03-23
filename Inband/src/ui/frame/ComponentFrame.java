@@ -105,6 +105,9 @@ public class ComponentFrame extends JPanel implements Transferable{
 	public JCheckBox getUseTimeCode(){
 		return useTimecode;
 	}
+	public boolean getIsDefault(){
+		return this.isDefault;
+	}
 	
 	@Override
 	public DataFlavor[] getTransferDataFlavors() {

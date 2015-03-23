@@ -36,8 +36,9 @@ public class ComponentPopupMenu extends JPopupMenu {
 	private class ComponentContextListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			DefaultListModel model = (DefaultListModel) target.getModel();
-			model.addElement(source);
+			@SuppressWarnings("unchecked")
+			DefaultListModel<JPanel> model = (DefaultListModel<JPanel>) target.getModel();
+			model.addElement((JPanel)source);
 			if (source.getParent() instanceof DropTargetPanel) {
 				DropTargetPanel parent = (DropTargetPanel) source.getParent();
 				parent.markPanelForRemoval((JPanel) source);

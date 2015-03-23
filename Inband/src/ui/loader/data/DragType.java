@@ -1,13 +1,16 @@
 package ui.loader.data;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sun.xml.txw2.annotation.XmlAttribute;
 @XmlRootElement
-public class DragType {
-	
+public class DragType implements Serializable {
+	private static final long serialVersionUID = 6666929400759312895L;
 	private String name;
 	private String type;
+	private boolean defaultEnabled;
 	private int defaultState;
 	public DragType(){
 		
@@ -40,5 +43,11 @@ public class DragType {
 	}
 	public String toString(){
 		return this.name;
+	}
+	public Boolean getDefaultEnabled() {
+		return defaultEnabled;
+	}
+	public void setDefaultEnabled(Boolean defaultEnabled) {
+		this.defaultEnabled = defaultEnabled;
 	}
 }
