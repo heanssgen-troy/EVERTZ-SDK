@@ -65,7 +65,7 @@ public class Upgrade {
 		firmwareData.putValue("devName", args[14]);
 		firmwareData.putValue("fwName", ((String)args[15]).substring(((String)args[13]).lastIndexOf(File.pathSeparatorChar)));
 		firmwareData.putValue("fwOverwriteNumber", args[16]);
-		firmwareData.putValue("fwSize", args[17]);
+		firmwareData.putValue("fwSize", new File((String)args[15]).length());
 		firmwareData.putValue("metadataSource", args[18]);
 		firmwareData.putValue("metadataVersion", "v01");
 		JSONMetadata upgradeData = new JSONMetadata("upgrade");
