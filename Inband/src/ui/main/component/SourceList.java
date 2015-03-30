@@ -22,17 +22,17 @@ public class SourceList extends JList<JPanel> {
 		this.init();
 		this.setTransferHandler(new PanelTransferHandler());
 	}
+
 	private void init(){
 		try{
 			URL url = DragType.class.getResource("Metadata-Firmware.xml"); 	
-			
 			this.sourceContainer = DragLoader.loadDragTypes(new File(url.toURI()));
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		DefaultListModel<JPanel> model = new DefaultListModel<JPanel>();
 		for(DragType type : sourceContainer.getList()){
-			model.addElement(new ComponentFrame(type.getName(), type.getType(),type.getDefaultState()==1,new JTextField()));
+				model.addElement(new ComponentFrame(type.getName(), type.getType(),type.getDefaultEnabled(),new JTextField()));
 		}
 		this.setDragEnabled(true);
 		this.setModel(model);
