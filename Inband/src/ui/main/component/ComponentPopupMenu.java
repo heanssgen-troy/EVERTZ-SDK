@@ -11,6 +11,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
+import ui.frame.ComponentFrame;
+
 public class ComponentPopupMenu extends JPopupMenu {
 	public static void attachReverseHandler(JList<?> target, Component source) {
 		((JComponent) source).setComponentPopupMenu(new ComponentPopupMenu(target,source));
@@ -41,7 +43,7 @@ public class ComponentPopupMenu extends JPopupMenu {
 			model.addElement((JPanel)source);
 			if (source.getParent() instanceof DropTargetPanel) {
 				DropTargetPanel parent = (DropTargetPanel) source.getParent();
-				parent.markPanelForRemoval((JPanel) source);
+				parent.markPanelForRemoval((ComponentFrame) source);
 			}
 
 		}

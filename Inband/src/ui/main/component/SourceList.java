@@ -32,7 +32,10 @@ public class SourceList extends JList<JPanel> {
 		}
 		DefaultListModel<JPanel> model = new DefaultListModel<JPanel>();
 		for(DragType type : sourceContainer.getList()){
-				model.addElement(new ComponentFrame(type.getName(), type.getType(),type.getDefaultEnabled(),new JTextField()));
+				JTextField componentField = new JTextField();
+				ComponentFrame frame = new ComponentFrame(type.getName(),type.getDevName(), type.getType(),type.getDefaultEnabled(),componentField);
+				DropTargetPanel.frameValues.put(type.getName(), componentField);
+				model.addElement(frame);
 		}
 		this.setDragEnabled(true);
 		this.setModel(model);

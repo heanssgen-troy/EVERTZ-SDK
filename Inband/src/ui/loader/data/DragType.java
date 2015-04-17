@@ -10,6 +10,7 @@ public class DragType implements Serializable {
 	private static final long serialVersionUID = 6666929400759312895L;
 	private String name;
 	private String type;
+	private String devName;
 	private boolean defaultEnabled;
 	private int defaultState;
 	public DragType(){
@@ -24,10 +25,11 @@ public class DragType implements Serializable {
 	public void setDefaultState(int defaultState) {
 		this.defaultState = defaultState;
 	}
-	public DragType(String name, String type, int defaultState){
+	public DragType(String name, String devName, String type, int defaultState){
 		this.name = name;
 		this.type = type;
 		this.defaultState = defaultState;
+		this.devName = devName;
 	}
 	@XmlAttribute
 	public String getName() {
@@ -41,6 +43,10 @@ public class DragType implements Serializable {
 	public int getDefaultState() {
 		return defaultState;
 	}
+	@XmlAttribute
+	public String getDevName(){
+		return this.devName;
+	}
 	public String toString(){
 		return this.name;
 	}
@@ -49,5 +55,8 @@ public class DragType implements Serializable {
 	}
 	public void setDefaultEnabled(Boolean defaultEnabled) {
 		this.defaultEnabled = defaultEnabled;
+	}
+	public void setDevName(String devName) {
+		this.devName = devName;
 	}
 }
