@@ -17,8 +17,6 @@ public class Preparator {
 		FirmwareHeader.setName(Preparator.FIRMWARE);
 		Upgrade.setName(Preparator.UPGRADE_NAME);
 		MetadataHeader.setName(Preparator.HEADER_NAME);
-		
-		
 		map.put(Preparator.HEADER_NAME, MetadataHeader);
 		map.put(Preparator.UPGRADE_NAME, Upgrade);
 		map.put(Preparator.FIRMWARE, FirmwareHeader);

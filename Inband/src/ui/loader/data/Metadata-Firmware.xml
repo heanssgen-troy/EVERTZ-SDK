@@ -4,81 +4,36 @@
         <defaultState>1</defaultState>
         <name>Device Group</name>
         <type>STRING</type>
+        <devName>devGroup</devName>
     </Type>
     <Type>
         <defaultState>0</defaultState>
         <name>Device MAC</name>
         <type>STRING\16</type>
+        <devName>devMAC</devName>
     </Type>
     <Type>
         <defaultState>1</defaultState>
         <name>Device Name</name>
         <type>STRING</type>
+        <devName>devName</devName>
     </Type>
     <Type>
         <defaultState>1</defaultState>
         <name>Device Serial Number</name>
         <type>INTx64</type>
-    </Type>
-    <Type>
-        <defaultState>1</defaultState>
-        <name>Firmware Name</name>
-        <type>STRING</type>
-    </Type>
-    <Type>
-        <defaultState>1</defaultState>
-        <name>Firmware Overwrite Number</name>
-        <type>INTx32</type>
-    </Type>
-    <Type>
-        <defaultState>1</defaultState>
-        <name>Firmware Size</name>
-        <type>INTx64</type>
+        <devName>devSN</devName>
     </Type>
     <Type>
         <defaultState>1</defaultState>
         <name>Metadata Source</name>
         <type>IPv4</type>
+        <devName>metadataSource</devName>
     </Type>
     <Type>
         <defaultState>1</defaultState>
         <name>Metadata Version</name>
         <type>INTx32</type>
+        <devName>metadataVersion</devName>
     </Type>
-	<Type>
-        <defaultState>1</defaultState>
-        <name>Program Reference</name>
-        <type>INTx32</type>
-    </Type>
-	<Type>
-        <defaultState>1</defaultState>
-        <name>Association Type</name>
-        <type>INTx32</type>
-    </Type>
-	<Type>
-        <defaultState>1</defaultState>
-        <name>Association Source</name>
-        <type>IPv4</type>
-    </Type>
-	<Type>
-        <defaultState>1</defaultState>
-        <name>Association Program</name>
-        <type>INTx32</type>
-    </Type>
-	<Type>
-        <defaultState>1</defaultState>
-        <name>Association PID</name>
-        <type>INTx16</type>
-    </Type>
-	<Type>
-        <defaultState>1</defaultState>
-        <name>PTS MODE</name>
-        <type>INTx2</type>
-    </Type>
-	<Type>
-        <defaultState>1</defaultState>
-        <name>PTS OFFSET</name>
-        <type>INTx64</type>
-    </Type>
-	
 </Container>

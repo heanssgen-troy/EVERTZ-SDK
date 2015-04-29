@@ -16,7 +16,7 @@ import ui.main.component.DropTargetPanel;
 import ui.main.component.JSONTextArea;
 import ui.main.component.SourceList;
 
-public class Executable {
+public class Main {
 	private JFrame frame;
 	private DropTargetPanel dropPanel;
 	private SourceList elementSourceList;
@@ -49,10 +49,10 @@ public class Executable {
 		metadataArea.setBounds(10,420,400,300);
 		
 		JTextField hostLabel = getLabelFields("Host Address");
-		hostLabel.setBounds(10,10,120,25);
+		hostLabel.setBounds(10,10,140,25);
 		frame.add(hostLabel);
 		JTextField targetLabel = getLabelFields("Association Source");
-		targetLabel.setBounds(10,45,120,25);
+		targetLabel.setBounds(10,45,140,25);
 		frame.add(targetLabel);
 		
 		this.initMetadataComps();
@@ -62,8 +62,8 @@ public class Executable {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-		hostPanel.setBounds(140,5,300,30);
-		targetPanel.setBounds(140,40,300,30);
+		hostPanel.setBounds(160,5,300,30);
+		targetPanel.setBounds(160,40,300,30);
 		
 		frame.add(listPane);
 		frame.add(dropPane);
@@ -82,16 +82,16 @@ public class Executable {
 	}
 	private void initMetadataComps(){
 		JTextField associationTypeLabel = getLabelFields("Association Type");
-		associationTypeLabel.setBounds(450, 10, 120, 25);
-		associationType.setBounds(580,10,180,25);
+		associationTypeLabel.setBounds(470, 10, 140, 25);
+		associationType.setBounds(620,10,180,25);
 		frame.add(associationTypeLabel);
 		JTextField associationPIDLabel = getLabelFields("Association PID");
-		associationPIDLabel.setBounds(450, 45, 120, 25);
-		associationPID.setBounds(580,45,180,25);
+		associationPIDLabel.setBounds(470, 45, 140, 25);
+		associationPID.setBounds(620,45,180,25);
 		frame.add(associationPIDLabel);
 		JTextField associationProgramLabel = getLabelFields("Association Program");
-		associationProgramLabel.setBounds(800, 10, 140, 25);
-		associationProgram.setBounds(950,10,200,25);
+		associationProgramLabel.setBounds(800, 10, 160, 25);
+		associationProgram.setBounds(970,10,200,25);
 		frame.add(associationProgramLabel);
 		frame.add(associationProgram);
 		frame.add(associationPID);
@@ -101,7 +101,7 @@ public class Executable {
 		
 	}
 	public static void main(String [] args){
-		Executable e = new Executable();
+		Main e = new Main();
 		JFrame frame = e.init();
 		frame.setVisible(true);
 	}

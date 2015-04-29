@@ -39,6 +39,7 @@ public class TransferInterface implements IByteNotificationListener {
 	public boolean hasRemainingBytes() {
 		return action.getRemaining() > 0;
 	}
+	
 
 	/**
 	 * Immediately stops the transfer and kills the transfer thread. This action
@@ -84,6 +85,12 @@ public class TransferInterface implements IByteNotificationListener {
 	@Override
 	public State getState() {
 		return action.getTransferState();
+	}
+
+	@Override
+	public int getRemainingBytes() {
+		// TODO Auto-generated method stub
+		return action.getRemaining();
 	}
 
 }

@@ -26,12 +26,12 @@ public class DropTargetPanel extends JPanel {
 	private final List<JPanel> componentTarget = new ArrayList<JPanel>();
 	private JList<?> targetList;
 	private JSONTextArea metadataListenerArea;
+	private DashedGraphicsFrame placeholderFrame = new DashedGraphicsFrame();
 	public DropTargetPanel(JList<?> targetList){
 		super();
 		this.setLayout(null);
 		this.targetList = targetList;
 		this.addMouseListener(new MetadataListener());
-		DashedGraphicsFrame placeholderFrame = new DashedGraphicsFrame();
 		this.componentTarget.add(placeholderFrame);
 		this.add(placeholderFrame);
 		new DropTargetListener(this);
